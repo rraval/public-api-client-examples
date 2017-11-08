@@ -1,0 +1,4 @@
+== Steps ==
+
+1. Install grpcio and grpcio-tools
+2. Run `./encircle_public_api_client.py CA_CERT CLIENT_CERT CLIENT_KEY`

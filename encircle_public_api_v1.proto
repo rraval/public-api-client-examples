@@ -1,0 +1,327 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+package server.public_api;
+
+// A date in symbolic format, divorced from timezone considerations,
+// and as such not corresponding to a specific instant in time.
+message SymbolicDate {
+    // Year in the proleptic Gregorian calendar
+    uint64 year = 1;
+
+    enum Month {
+        January = 0;
+        February = 1;
+        March = 2;
+        April = 3;
+        May = 4;
+        June = 5;
+        July = 6;
+        August = 7;
+        September = 8;
+        October = 9;
+        November = 10;
+        December = 11;
+    }
+
+    // Month of the year
+    Month month = 2;
+
+    // Day of the month, indexed starting from 1
+    uint32 day = 3;
+}
+
+// Information describing a property claim.
+message PropertyClaimInfo {
+    // The primary identifier for the property claim
+    uint64 id = 1;
+
+    // The time at which the server processed the request creating the
+    // property claim.
+    google.protobuf.Timestamp created = 2;
+
+    // A url that can be used to view the claim in a web browser by
+    // a user with the correct permissions.
+    string permalink_url = 3;
+
+    // The organization under which this claim lives
+    string organization_id = 4;
+
+    // The brand information used by this claim
+    // Possible values can be obtained by calling
+    // ListBrands
+    uint64 brand_id = 5;
+
+    // The insurer's identifier for a property claim
+    // This is required when both assignment_identifier
+    // and contractor_identifier are blank
+    google.protobuf.StringValue insurer_identifier = 16;
+
+    // The identifier used in the assignment software
+    // This is required when both insurer_identifier
+    // and contractor_identifier are blank
+    google.protobuf.StringValue assignment_identifier = 17;
+
+    // The indentifier used by the contractor for the property claim
+    // This is required when both insurer_identifier
+    // and assignment_identifier are blank
+    google.protobuf.StringValue contractor_identifier = 18;
+
+    // The full name of the policyholder
+    google.protobuf.StringValue policyholder_name = 19;
+
+    // A free-form text field used to write details of the property claim
+    google.protobuf.StringValue loss_details = 20;
+
+    // The date of the loss
+    // Will default to today's date in the UTC+0 timezone.
+    SymbolicDate date_of_loss = 21;
+
+    // The date the property claim was first created
+    // Will default to today's date in the UTC+0 timezone.
+    SymbolicDate date_claim_created = 22;
+
+    // The full street address of the property claim,
+    // including city/state/country/postal-code
+    google.protobuf.StringValue full_address = 23;
+
+    // The name of the insurance company insuring the policyholder
+    google.protobuf.StringValue insurance_company_name = 24;
+
+    // The name of the adjuster working on this property claim
+    google.protobuf.StringValue adjuster_name = 25;
+
+    // The name of the broken or agent working with the policyholder
+    google.protobuf.StringValue broker_or_agent_name = 26;
+
+    // The email address of the policyholder
+    google.protobuf.StringValue policyholder_email_address = 27;
+
+    // The phone_number of the policyholder
+    google.protobuf.StringValue policyholder_phone_number = 28;
+
+    // The policy # for the insured property
+    google.protobuf.StringValue policy_number = 29;
+
+    // The annual depreciation to use when no depreciation category
+    // is picked, as a unitless ratio. If left blank, there is no
+    // default and ACV is not calculated for an item until a depreciation
+    // category is added to it
+    google.protobuf.DoubleValue default_depreciation = 30;
+
+    // The maximum total depreciation that can ever be applied to an item,
+    // as a unitless ratio. This applies on top of default_depreciation.
+    google.protobuf.DoubleValue max_depreciation = 31;
+
+    // The sales tax to add to the computed total RCV, as a unitless ratio.
+    google.protobuf.DoubleValue sales_tax = 32;
+
+    // The estimated amount that will be spent on the emergency portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value emergency_estimate = 33;
+
+    // The estimated amount that will be spent on the repair portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value repair_estimate = 34;
+
+    // The estimated amount that will be spent on the contents portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value contents_estimate = 35;
+}
+
+message NewPropertyClaimInfo {
+    // The organization under which this claim lives
+    string organization_id = 1;
+
+    // The brand information used by this claim
+    // Possible values can be obtained by calling
+    // ListBrands
+    uint64 brand_id = 2;
+
+    // The insurer's identifier for a property claim
+    // This is required when both assignment_identifier
+    // and contractor_identifier are blank
+    google.protobuf.StringValue insurer_identifier = 16;
+
+    // The identifier used in the assignment software
+    // This is required when both insurer_identifier
+    // and contractor_identifier are blank
+    google.protobuf.StringValue assignment_identifier = 17;
+
+    // The indentifier used by the contractor for the property claim
+    // This is required when both insurer_identifier
+    // and assignment_identifier are blank
+    google.protobuf.StringValue contractor_identifier = 18;
+
+    // The full name of the policyholder
+    google.protobuf.StringValue policyholder_name = 19;
+
+    // A free-form text field used to write details of the property claim
+    google.protobuf.StringValue loss_details = 20;
+
+    // The date of the loss
+    // Will default to today's date in the UTC+0 timezone.
+    SymbolicDate date_of_loss = 21;
+
+    // The date the property claim was first created
+    // Will default to today's date in the UTC+0 timezone.
+    SymbolicDate date_claim_created = 22;
+
+    // The full street address of the property claim,
+    // including city/state/country/postal-code
+    google.protobuf.StringValue full_address = 23;
+
+    // The name of the insurance company insuring the policyholder
+    google.protobuf.StringValue insurance_company_name = 24;
+
+    // The name of the adjuster working on this property claim
+    google.protobuf.StringValue adjuster_name = 25;
+
+    // The name of the broken or agent working with the policyholder
+    google.protobuf.StringValue broker_or_agent_name = 26;
+
+    // The email address of the policyholder
+    google.protobuf.StringValue policyholder_email_address = 27;
+
+    // The phone_number of the policyholder
+    google.protobuf.StringValue policyholder_phone_number = 28;
+
+    // The policy # for the insured property
+    google.protobuf.StringValue policy_number = 29;
+
+    // The annual depreciation to use when no depreciation category
+    // is picked, as a unitless ratio. If left blank, there is no
+    // default and ACV is not calculated for an item until a depreciation
+    // category is added to it
+    google.protobuf.DoubleValue default_depreciation = 30;
+
+    // The maximum total depreciation that can ever be applied to an item,
+    // as a unitless ratio. This applies on top of default_depreciation.
+    google.protobuf.DoubleValue max_depreciation = 31;
+
+    // The sales tax to add to the computed total RCV, as a unitless ratio.
+    google.protobuf.DoubleValue sales_tax = 32;
+
+    // The estimated amount that will be spent on the emergency portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value emergency_estimate = 33;
+
+    // The estimated amount that will be spent on the repair portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value repair_estimate = 34;
+
+    // The estimated amount that will be spent on the contents portion
+    // of the property claim, expressed in hundredths of the local currency.
+    google.protobuf.UInt64Value contents_estimate = 35;
+}
+
+// Information about an organization.
+// Currently limited to just its identifier,
+// for use in other searches.
+message OrganizationInfo {
+    // A UUID identifying the organization
+    string id = 1;
+}
+
+// Information about a brand.
+// Brands drive the logo, org name, and other details
+// present in a claim's reports.
+// Most orgs have only one brand.
+message BrandInfo {
+    // A unique id for this brand
+    uint64 id = 1;
+
+    // The UUID of the owning organization.
+    string organization_id = 2;
+
+    // The short name associated with this brand.
+    // This is distinct from the legal name.
+    google.protobuf.StringValue short_name = 3;
+}
+
+// Any image uploaded to the property claim, auto claim, or property inspection
+message PictureInfo {
+    // The filename for the picture. May have been user provided or autogenerated.
+    string filename = 1;
+
+    // The MIME content type for the picture.
+    string content_type = 2;
+
+    // A signed url that can be used to download the picture.
+    // Is valid for 24 hours.
+    string download_uri = 3;
+}
+
+message PropertyClaimId {
+    // The id of the created property
+    uint64 id = 1;
+}
+
+// A document that is part of a property claim, auto claim or property inspection
+message DocumentInfo {
+    // The filename for the document. May have been user provided or autogenerated.
+    string filename = 1;
+
+    // The MIME content type for the document.
+    string content_type = 2;
+
+    // A signed url that can be used to download the document.
+    // Is valid for 24 hours.
+    string download_uri = 3;
+}
+
+// The criteria used to filter the list of organizations.
+// Currently empty, always fetches the whole list.
+message OrganizationFilterCriteria {
+}
+
+// The criteria used to filter the list of brands.
+message BrandFilterCriteria {
+    // Which organization to list brands from.
+    string organization_id = 1;
+}
+
+// The criteria used to filter the list of property claims.
+message PropertyClaimFilterCriteria {
+    // Which organization to list property claims from.
+    string organization_id = 1;
+}
+
+// The criteria used to filter the property claims pictures.
+message PropertyClaimPictureFilterCriteria {
+    // Which property claim to list pictures from
+    uint64 claim_id = 1;
+}
+
+// The criteria used to filter the property claims documents.
+message PropertyClaimDocumentFilterCriteria {
+    // Which property claim to list documents from
+    uint64 claim_id = 1;
+}
+
+// Allows public access to some of encircle's functionality
+service PublicAPIV1 {
+    // Given search criteria (currently limited to searching everything ever),
+    // returns every matching organization.
+    rpc ListOrganizations (OrganizationFilterCriteria) returns (stream OrganizationInfo);
+
+    // Given search criteria (currently limited to brand's organization),
+    // returns every matching brand.
+    rpc ListBrands (BrandFilterCriteria) returns (stream BrandInfo);
+
+    // Given search criteria (currently limited to claim's organization),
+    // returns every matching property claim.
+    rpc ListPropertyClaims (PropertyClaimFilterCriteria) returns (stream PropertyClaimInfo);
+
+    // Given search criteria, returns every picture in that claim.
+    rpc ListPropertyClaimPictures (PropertyClaimPictureFilterCriteria) returns (stream PictureInfo);
+
+    // Given search criteria, returns every rendered document in that claim.
+    // Will not return documents that have not finished downloading.
+    rpc ListPropertyClaimDocuments (PropertyClaimDocumentFilterCriteria) returns (stream DocumentInfo);
+
+    // Creates a property claim with the given information, returning its id.
+    rpc CreatePropertyClaim (NewPropertyClaimInfo) returns (PropertyClaimId);
+}
