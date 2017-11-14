@@ -1,0 +1,14 @@
+{
+    "require": {
+        "grpc/grpc": "^v1.3.0",
+        "google/protobuf": "^v3.5.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "GPBMetadata\\": "./"
+        },
+        "psr-4": {
+            "Server\\Public_api\\": "Server/Public_api/"
+        }
+    }
+}
