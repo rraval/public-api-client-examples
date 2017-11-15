@@ -59,29 +59,33 @@ function main($ca_cert, $client_cert, $client_key, $server_uri) {
     $claimInfo->setContentsEstimate(makeInt(5000));
 
     list($claimResult, $status) = $client->CreatePropertyClaim($claimInfo)->wait();
-    if ($status->code != Grpc\STATUS_OK) {
-        die("Could not create claim, error={$status->code}, details={$status->details}");
-    }
+    checkStatus($status);
 
     print("Created Claim with ID = {$claimResult->getId()}\n");
 }
 
 function getOrganization($client) {
     $orgFilter = new Server\Public_api\OrganizationFilterCriteria();
-    $orgResponses = $client->ListOrganizations($orgFilter)->responses();
-    foreach ($orgResponses as $org) {
+
+    $orgListRequest = $client->ListOrganizations($orgFilter);
+    foreach ($orgListRequest->responses() as $org) {
         return $org;
     }
+
+    checkStatus($orgListRequest->getStatus());
     return null;
 }
 
 function getBrand($client, $org) {
     $brandFilter = new Server\Public_api\BrandFilterCriteria();
     $brandFilter->setOrganizationId($org->getId());
-    $brandResponses = $client->ListBrands($brandFilter)->responses();
-    foreach ($brandResponses as $brand) {
+
+    $brandListRequest = $client->ListBrands($brandFilter);
+    foreach ($brandListRequest->responses() as $brand) {
         return $brand;
     }
+
+    checkStatus($brandListRequest->getStatus());
     return null;
 }
 
@@ -109,6 +113,18 @@ function makeInt($num) {
     $intValue = new Google\Protobuf\UInt64Value();
     $intValue->setValue($num);
     return $intValue;
+}
+
+/**
+ * Helper function to check the `status` of a GRPC call. Throws an exception if
+ * the call failed.
+ */
+function checkStatus($status) {
+    if ($status->code != \Grpc\STATUS_OK) {
+        throw new Exception("error={$status->code}, details={$status->details}");
+    }
+
+    return null;
 }
 
 if (count($argv) < 4) {

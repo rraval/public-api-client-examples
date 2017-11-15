@@ -117,3 +117,11 @@ Open the file, it should start with a line that says:
 
 The private key is the secret file generated alongside the CSR and the one that
 should never leave your possession.
+
+### Uncaught Exception: error=..., details=...
+
+This is thrown by the `checkStatus` function and indicates that one of the GRPC
+calls failed. The `details` message tends to have a reasonable message and the
+stack trace should tell you which function failed.
+
+Contact the Encircle team with the error message and we'll help!
